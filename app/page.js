@@ -5,10 +5,14 @@ import { motion } from "motion/react";
 export default function Home() {
   const [input, setInput] = useState("");
   const [reply, setReply] = useState("");
+
   const [loading, setLoading] = useState(false);
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim()) {
+       alert("First enter the query in this box")
+        return
+    } ;
     setLoading(true);
     setReply("");
     const res = await fetch("/api/chat", {
@@ -19,6 +23,7 @@ export default function Home() {
     const data = await res.json();
     setReply(data.reply);
     setLoading(false);
+    setInput("")
   };
 
   return (
@@ -38,10 +43,9 @@ export default function Home() {
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask  Something..."
+          placeholder="Ask  Anything..."
           className="border border-white/40 bg-white/30 placeholder-gray-200 text-white rounded-xl w-full h-28 p-4 focus:ring-2 focus:ring-yellow-400 outline-none resize-none"
         />
-
         {/* Send Button */}
         <motion.button
           onClick={sendMessage}
